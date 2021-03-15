@@ -1,7 +1,9 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
 
+
 Vue.use(VueRouter)
+
 
 const routes = [
   {
@@ -23,12 +25,16 @@ const routes = [
   {
     path: '/profile',
     component: () => import("@/views/profile/Profile.vue")
+  },
+  {
+    path: '/detail/:iid',
+    component: () => import("@/views/detail/Detail.vue")
   }
 ];
 
 const router = new VueRouter({
   routes,
-  mode: 'history'
+  mode: 'history',
 })
 
 export default router

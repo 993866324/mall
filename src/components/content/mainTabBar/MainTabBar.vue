@@ -1,7 +1,6 @@
 <template>
   <div>
-    <router-view />
-    <tab-bar>
+    <tab-bar class="tab-bar">
       <tab-bar-item path="/home">
         <img slot="icon-item" src="~@/assets/img/tabbar/home.svg" alt />
         <img slot="icon-item-active" src="~@/assets/img/tabbar/home_active.svg" alt />
@@ -39,4 +38,7 @@ export default {
 </script>
 
 <style scoped>
+.tab-bar {
+  z-index: 99;
+}
 </style>

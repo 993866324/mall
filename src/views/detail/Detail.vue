@@ -1,8 +1,14 @@
 <template>
   <div id="detail">
     <detail-nav-bar />
-    <detail-swiper :topImages="topImages" />
-    <detail-base-info :goods="goods" />
+    <scroll class="content" :probeType="3" :pullUpLoad="true" ref="scroll" @scroll="contentScroll">
+      <detail-swiper :topImages="topImages" />
+      <detail-base-info :goods="goods" />
+      <detail-shop-info :shop="shop" />
+      <detail-goods-info :detailInfo="detailInfo" />
+      <detail-param-info :paramInfo="paramInfo" />
+    </scroll>
+    <back-top v-show="isShowBackTop" @click.native="backClick" />
   </div>
 </template>
 
@@ -10,19 +16,33 @@
 import DetailNavBar from "./childComps/DetailNavBar";
 import DetailSwiper from "./childComps/DetailSwiper";
 import DetailBaseInfo from "./childComps/DetailBaseInfo";
-import { getDetail, Goods } from "@/network/detail";
+import DetailShopInfo from "./childComps/DetailShopInfo";
+import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
+import DetailParamInfo from "./childComps/DetailParamInfo";
+import BackTop from "@/components/content/backTop/BackTop";
+import Scroll from "@/components/common/scroll/Scroll";
+import { getDetail, Goods, Shop, GoodsParam } from "@/network/detail";
 export default {
   name: "Detail",
   components: {
     DetailNavBar,
     DetailSwiper,
-    DetailBaseInfo
+    DetailBaseInfo,
+    DetailShopInfo,
+    Scroll,
+    DetailGoodsInfo,
+    DetailParamInfo,
+    BackTop
   },
   data() {
     return {
       iid: null,
       topImages: [],
-      goods: {}
+      goods: {},
+      shop: {},
+      detailInfo: {},
+      paramInfo: {},
+      isShowBackTop: false
     };
   },
   created() {
@@ -40,10 +60,41 @@ export default {
         data.columns,
         data.shopInfo.services
       );
+      // 获取店铺信息
+      this.shop = new Shop(data.shopInfo);
+      // 获取详情图片
+      this.detailInfo = data.detailInfo;
+      // 获取参数
+      this.paramInfo = new GoodsParam(
+        data.itemParams.info,
+        data.itemParams.rule
+      );
     });
+  },
+  methods: {
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0, 500);
+    },
+    contentScroll(position) {
+      this.isShowBackTop = -position.y > 1500;
+    }
   }
 };
 </script>
 
 <style scoped>
+#detail {
+  height: 100vh;
+  position: relative;
+  z-index: 100;
+  background-color: #fff;
+}
+.content {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
 </style>

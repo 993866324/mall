@@ -1,12 +1,14 @@
 <template>
   <div id="detail">
-    <detail-nav-bar />
+    <detail-nav-bar @navBarClick="navBarClick" ref="nav" />
     <scroll class="content" :probeType="3" :pullUpLoad="true" ref="scroll" @scroll="contentScroll">
       <detail-swiper :topImages="topImages" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
-      <detail-goods-info :detailInfo="detailInfo" />
-      <detail-param-info :paramInfo="paramInfo" />
+      <detail-goods-info :detailInfo="detailInfo" @imagesLoad="imagesLoad" />
+      <detail-param-info ref="params" :paramInfo="paramInfo" />
+      <detail-comment ref="comment" />
+      <detail-recommend ref="recommend" />
     </scroll>
     <back-top v-show="isShowBackTop" @click.native="backClick" />
   </div>
@@ -19,6 +21,8 @@ import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
+import DetailRecommend from "./childComps/DetailRecommend";
+import DetailComment from "./childComps/DetailComment";
 import BackTop from "@/components/content/backTop/BackTop";
 import Scroll from "@/components/common/scroll/Scroll";
 import { getDetail, Goods, Shop, GoodsParam } from "@/network/detail";
@@ -32,7 +36,9 @@ export default {
     Scroll,
     DetailGoodsInfo,
     DetailParamInfo,
-    BackTop
+    BackTop,
+    DetailRecommend,
+    DetailComment
   },
   data() {
     return {
@@ -42,7 +48,10 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
-      isShowBackTop: false
+      isShowBackTop: false,
+      commentInfo: {},
+      themeTopYs: [],
+      currentIndex: 0
     };
   },
   created() {
@@ -50,7 +59,6 @@ export default {
     this.iid = this.$route.params.iid;
     /// 通过iid请求详情数据
     getDetail(this.iid).then(res => {
-      console.log(res);
       const data = res.result;
       // 获取轮播图图片
       this.topImages = data.itemInfo.topImages;
@@ -69,14 +77,42 @@ export default {
         data.itemParams.info,
         data.itemParams.rule
       );
+      // 评论信息
+      if (data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.cRate[0];
+      }
     });
   },
+  updated() {},
   methods: {
     backClick() {
       this.$refs.scroll.scrollTo(0, 0, 500);
     },
     contentScroll(position) {
-      this.isShowBackTop = -position.y > 1500;
+      const pY = -position.y;
+      const tY = this.themeTopYs;
+      this.isShowBackTop = pY > 1500;
+      let length = this.themeTopYs.length;
+      for (let i = 0; i < length; i++) {
+        if (
+          this.currentIndex !== i &&
+          ((i < length - 1 && pY >= tY[i] && pY < tY[i + 1]) ||
+            (i === length - 1 && pY >= tY[i]))
+        ) {
+          this.currentIndex = i;
+          this.$refs.nav.currentIndex = this.currentIndex;
+        }
+      }
+    },
+    navBarClick(index) {
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 200);
+    },
+    imagesLoad() {
+      this.themeTopYs = [];
+      this.themeTopYs.push(0);
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+      this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
     }
   }
 };

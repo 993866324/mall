@@ -11,7 +11,13 @@
     </div>
     <div class="goods_info_key">{{ detailInfo.detailImage[0].key }}</div>
     <div class="goods_info_imgs">
-      <img :src="item" alt v-for="(item, index) in detailInfo.detailImage[0].list" :key="index" />
+      <img
+        :src="item"
+        alt
+        v-for="(item, index) in detailInfo.detailImage[0].list"
+        :key="index"
+        @load="imagesLoad"
+      />
     </div>
   </div>
 </template>
@@ -23,6 +29,11 @@ export default {
       default() {
         return {};
       }
+    }
+  },
+  methods: {
+    imagesLoad() {
+      this.$emit("imagesLoad");
     }
   }
 };

@@ -2,9 +2,9 @@
   <div v-if="Object.keys(goods).length !== 0">
     <div class="title">{{goods.title}}</div>
     <div class="price-wrap">
-      <div class="new-price">{{goods.price}}</div>
+      <div class="new-price">{{goods.newPrice}}</div>
       <div class="old-price">{{goods.oldPrice}}</div>
-      <div class="discount-desc" v-if="goods.discountDesc">{{goods.discountDesc}}</div>
+      <div class="discount" v-if="goods.discount">{{goods.discount}}</div>
     </div>
     <div class="other-info">
       <div>{{goods.columns[0]}}</div>
@@ -45,6 +45,8 @@ export default {
 .price-wrap {
   display: flex;
   padding: 0 4px 10px;
+  line-height: 28px;
+  font-size: 20px;
 }
 .new-price {
   color: var(--color-high-text);
@@ -52,12 +54,14 @@ export default {
 .old-price {
   color: #999;
   font-size: 12px;
-  margin: 0 4px;
+  margin: 0 8px;
   text-decoration: line-through;
 }
-.discount-desc {
+.discount {
   color: #fff;
   font-size: 12px;
+  height: 20px;
+  line-height: 17px;
   border-radius: 100px;
   padding: 2px 6px;
   background-color: var(--color-high-text);

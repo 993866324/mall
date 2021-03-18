@@ -11,6 +11,5 @@ export default {};
 <style scoped>
 .recommend {
   height: 900px;
-  background-color: hotpink;
 }
 </style>

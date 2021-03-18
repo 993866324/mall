@@ -20,7 +20,7 @@ const routes = [
   },
   {
     path: '/shopcart',
-    component: () => import("@/views/shopcart/Shopcart.vue")
+    component: () => import("@/views/shopcart/Cart.vue")
   },
   {
     path: '/profile',

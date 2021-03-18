@@ -11,6 +11,5 @@ export default {};
 <style scoped>
 .comment {
   height: 600px;
-  background-color: pink;
 }
 </style>

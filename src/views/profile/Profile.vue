@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Profile.vue</h2>
+    <h1>Profile</h1>
   </div>
 </template>
 

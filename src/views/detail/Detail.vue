@@ -11,6 +11,7 @@
       <detail-recommend ref="recommend" />
     </scroll>
     <back-top v-show="isShowBackTop" @click.native="backClick" />
+    <detail-bottom-bar @addToCart="addToCart" />
   </div>
 </template>
 
@@ -23,6 +24,7 @@ import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailRecommend from "./childComps/DetailRecommend";
 import DetailComment from "./childComps/DetailComment";
+import DetailBottomBar from "./childComps/DetailBottomBar";
 import BackTop from "@/components/content/backTop/BackTop";
 import Scroll from "@/components/common/scroll/Scroll";
 import { getDetail, Goods, Shop, GoodsParam } from "@/network/detail";
@@ -38,7 +40,8 @@ export default {
     DetailParamInfo,
     BackTop,
     DetailRecommend,
-    DetailComment
+    DetailComment,
+    DetailBottomBar
   },
   data() {
     return {
@@ -83,8 +86,19 @@ export default {
       }
     });
   },
-  updated() {},
   methods: {
+    addToCart() {
+      // 获取购物车需要展示的信息
+      const product = {};
+      product.image = this.topImages[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      product.iid = this.iid;
+      // 添加入购物车
+      this.$store.dispatch("addCart", product);
+    },
+
     backClick() {
       this.$refs.scroll.scrollTo(0, 0, 500);
     },
@@ -130,7 +144,7 @@ export default {
   top: 44px;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 49px;
   overflow: hidden;
 }
 </style>

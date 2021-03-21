@@ -70,16 +70,15 @@ export default {
     };
   },
   created() {
-    // 请求多个数据
+    // 请求数据
     this.getMultidata();
-    // 请求商品数据
     this.getGoods("pop");
     this.getGoods("new");
     this.getGoods("sell");
   },
   activated() {
-    this.$refs.scroll.scrollTo(0, this.saveY);
     this.$refs.scroll.refresh();
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY();

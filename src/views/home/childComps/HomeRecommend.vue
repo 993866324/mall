@@ -13,7 +13,12 @@
 export default {
   name: "HomeRecommend",
   props: {
-    recommend: Array
+    recommend: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
   }
 };
 </script>

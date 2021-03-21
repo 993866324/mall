@@ -44,7 +44,7 @@ export default {
   border-bottom: 1px solid #ccc;
 }
 .item-ipt {
-  margin-top: 50px;
+  margin: 50px 5px 0;
 }
 .item-title,
 .item-desc {

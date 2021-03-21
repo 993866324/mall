@@ -54,11 +54,15 @@ export default {
 .total {
   flex: 1;
 }
+#bottom-ipt {
+  margin: 0 5px;
+}
 .bottom-ipt {
   display: inline-block;
   margin: 0 5px;
-  width: 50px;
+  width: 60px;
 }
+
 .right {
   background-color: orange;
   width: 90px;
